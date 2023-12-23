@@ -5,7 +5,7 @@
 %%	Preparation of Master's Thesis and Doctoral Dissertations
 %% Version 1.00 written by John P. Weiss, 1997
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%      version 1.14, Ken Anderson, August 2020 -- removed signature
+%%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
 %%		guidelines.
