@@ -20,6 +20,9 @@
 %%      \footnote command, like "Sentence \footnote{Note}.".
 %%    - added \titlePageTitle{#1} command to allow customizing the
 %%      formatting of the title on the tile page specifically.
+%%    - added \introductoryPage{#1} command for a vertically centered
+%%      message or quotation on a deicated page immediately before
+%%      the first chapter.
 %%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
@@ -973,6 +976,7 @@
 		Date~{\vrule width 35mm height 0.2mm}
 	\end{flushright}
 }
+\newcommand*{\th@introductoryPageContent}{none}	% optional
 \newcommand{\th@AbstractPageStyle}{\relax}
 \newcommand{\th@dedicationStash}{\relax}
 \newcommand{\th@dedicationTitleStash}{\relax}
@@ -1157,6 +1161,22 @@
 	\fi
 }
 
+\newcommand{\th@introductoryPage}{
+	\ifthenelse{\equal{\th@introductoryPageContent}{none}}{\relax}
+	{%
+		\pagebreak
+		\thispagestyle{empty} % Hide page number on this page.
+		\hspace{0pt}
+		\vfill
+
+		\th@introductoryPageContent
+
+		\vfill
+		\hspace{0pt}
+		\pagebreak
+	}
+}
+
 
 % This performs the actual generation of the prologue
 \newcounter{th@storepage}
@@ -1198,6 +1218,12 @@
 	\doublespacing
 	\clearpage
 	\pagenumbering{arabic}
+	% According to the graduate school, this introductory page must be counted as page #1, even if
+	% the page number is invisible.
+	\typeout{}
+	\typeout{Making Introductory Page}
+	\typeout{}
+	\th@introductoryPage
 	\@THshortChapterfalse
 }
 
@@ -1221,6 +1247,7 @@
 	\th@StoreIn{\th@dedicationTitleStash}{#1}
 	\th@StoreIn{\th@dedicationStash}{#2}
 }
+\newcommand*{\introductoryPage}[1]{\th@StoreIn{\th@introductoryPageContent}{#1}}
 \renewcommand*{\author}[2]{
 	\th@StoreIn{\th@fwdname}{#1 #2}
 	\th@StoreIn{\th@revname}{#2, #1}
