@@ -10,6 +10,14 @@
 %%      default style after confirming with the Graduate School that
 %%      their style guide forbidding italicized text was outdated.
 %%    - renamed "emphisbold" to "emphisitalics" throughout.
+%%    - adopted the {setspace} package for double spacing in place of
+%%      the custom solution used previously, which introduced problems
+%%      with footnotes.
+%%    - fixed the \footnote command to avoid adding extra space after
+%%      the inline footnotemark.
+%%    - added {fnpct} package to kern footnote marks and punctuation
+%%      appropriately.  Always write periods and commas after the
+%%      \footnote command, like "Sentence \footnote{Note}.".
 %%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
@@ -245,65 +253,37 @@
 	\protect\th@DoChapCenter #1}
 
 
-%%%%%%% DEFINE DOUBLE-SPACING (THE DEFAULT) AND OTHER SPACING:
-\def\setspace@size{\ifx\@currsize\normalsize\@normalsize\else\@currsize\fi}
-\def\doublespacing{ \ifcase \@ptsize \relax
-      \def \baselinestretch {2.004}%	10pt
-  \or \def \baselinestretch {1.771}%	11pt
-  \or \def \baselinestretch {1.660}%	12pt
-  \fi \setspace@size}
-\def\singlespacing{\def \baselinestretch {1} \setspace@size \vskip \baselineskip}
-\def\setstretch#1{\renewcommand{\baselinestretch}{#1}}
-\def\@setsize#1#2#3#4{\@nomath#1
-  \let\@currsize#1 \baselineskip #2
-  \baselineskip \baselinestretch\baselineskip
-  \parskip \baselinestretch\parskip
-  \setbox\strutbox \hbox{ \vrule height.7\baselineskip depth.3\baselineskip
-  width\z@} \skip\footins \baselinestretch\skip\footins
-  \normalbaselineskip\baselineskip#3#4}
-%%%%%%%%% floats & footnotes singlespaced %%%%%%%%%
-\let\latexx@xfloat=\@xfloat
-\def\@xfloat #1[#2]{\latexx@xfloat #1[#2]
-\def\baselinestretch{1}\@normalsize \normalsize}
-\long\def\@footnotetext#1{
-  \insert\footins{
-    \def\baselinestretch {1}
-    \reset@font\footnotesize
-    \interlinepenalty\interfootnotelinepenalty
-    \splittopskip\footnotesep
-    \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
-    \hsize\columnwidth \@parboxrestore
-    \protected@edef\@currentlabel{
-      \csname p@footnote\endcsname\@thefnmark}
-    \color@begingroup \@makefntext{
-        \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}
-    \color@endgroup}}
-\long\def\@mpfootnotetext#1{
-  \global\setbox\@mpfootins\vbox{
-    \unvbox \@mpfootins
-    \def\baselinestretch {1}
-    \reset@font\footnotesize
-    \hsize\columnwidth \@parboxrestore
-    \protected@edef\@currentlabel{
-      \csname p@mpfootnote\endcsname\@thefnmark}
-    \color@begingroup \@makefntext{
-       \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}
-   \color@endgroup}}
-%%%%%%%% single / double spacing %%%%%%%%%
-\def\singlespace{ \vskip \baselineskip \def\baselinestretch {1}
-  \setspace@size \vskip -\baselineskip }
-\def\endsinglespace{\par}
-\def\spacing#1{ \par \begingroup \def\baselinestretch {#1} \setspace@size }
-\def\endspacing{ \par \vskip \parskip \vskip \baselineskip
-  \endgroup \vskip -\parskip \vskip -\baselineskip }
-\def\doublespace{ \ifcase \@ptsize \relax
-      \spacing{2.004}%	10pt
-  \or \spacing{1.771}%	11pt
-  \or \spacing{1.660}%	12pt
-  \fi }
-\let\enddoublespace=\endspacing
+%%%%%%% SPACING AND FOOTNOTES.
 
+% Adjust footnote stuff.  This is intertwined with spacing because LaTeX.
 
+% Proper kerning of footnote marks and punctuation.
+\usepackage{fnpct}
+
+% This needs to be loaded *before* the double spacing stuff below, otherwise
+% footnotes will be double spaced.
+\usepackage[
+	% The `stable` option should allow the use of footnotes in section titles,
+	% but that doesn't seem to work with this style.  You need to use:
+	% \section[Section Title]{Section Title \protect\footnote{Footnote}}
+	% stable,
+]{footmisc}
+% The indendation of the each footnote.
+\setlength{\footnotemargin}{1.5em}
+% A little extra space between footnotes on the same page.
+\setlength{\footnotesep}{1.22\footnotesep}
+
+% Sets double-spacing to be the default
+\usepackage{setspace}
+
+% Change the definition of \doublespacing to do some font-size-based magic.
+% \dobulespacing is inserted in a bunch of places throughout this style file.
+\renewcommand{\doublespacing}{ \ifcase \@ptsize \relax
+      \setstretch{2.004}%	10pt
+  \or \setstretch{1.771}%	11pt
+  \or \setstretch{1.660}%	12pt
+  \fi%
+}
 
 %%%%% SET THE OVERALL DOCUMENT PROPERTIES, such as page numbering,
 % margins... Initialize several global document properties, but do so
