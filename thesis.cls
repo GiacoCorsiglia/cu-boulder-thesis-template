@@ -18,6 +18,8 @@
 %%    - added {fnpct} package to kern footnote marks and punctuation
 %%      appropriately.  Always write periods and commas after the
 %%      \footnote command, like "Sentence \footnote{Note}.".
+%%    - added \titlePageTitle{#1} command to allow customizing the
+%%      formatting of the title on the tile page specifically.
 %%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
@@ -855,6 +857,7 @@
 		You must specify a title!}
 	{Use the \protect\title{} command in the preamble.}
 }
+\newcommand*{\th@titlePageTitle}{\th@title}
 \newcommand*{\th@fwdname}{
 	\ClassError{thesis}{
 		You must specify your name!}
@@ -1001,9 +1004,9 @@
 		\centering\item[]
 		{\th@ChapterStyle
 			\if@chapterCaps
-				\uppercase\expandafter{\th@title}\\
+				\uppercase\expandafter{\th@titlePageTitle}\\
 			\else
-				\th@title\\
+				\th@titlePageTitle\\
 			\fi}
 		by\\
 		{\th@OtherSecHeadStyles
@@ -1200,6 +1203,7 @@
 
 %%%%%%%%% USER COMMANDS FOR CONTROLLING THE PROLOGUE:
 \renewcommand*{\title}[1]{\th@StoreIn{\th@title}{#1}}
+\newcommand*{\titlePageTitle}[1]{\th@StoreIn{\th@titlePageTitle}{#1}}
 \newcommand*{\reader}[1]{\th@StoreIn{\th@reader}{#1}}
 \newcommand*{\readerThree}[1]{\th@StoreIn{\th@readerThree}{#1}}
 \newcommand*{\readerFour}[1]{\th@StoreIn{\th@readerFour}{#1}}
