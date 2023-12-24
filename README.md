@@ -21,3 +21,5 @@ To use this template, clone or [download](https://github.com/GiacoCorsiglia/cu-b
 4. By default, it's expected that you'll manage your bibliography using BibTeX in the `bibliography.bib` file.  Check out "BIBLIOGRAPHY SETUP" in `thesis.tex` to customize this or to reference other `.bib` files.
 5. If you organize your figures into folders, you must reference them using their full path relative to the root of the repository.  For example, a figure that lives in the `chapter-1` folder should be references as `chapter-1/fig.pdf`, otherwise LaTeX won’t find it.
 6. If you have custom LaTeX command definitions to include, throw those in `macros.tex`.
+
+See the `thesis.pdf` file for more tips on writing TeX in this template.
