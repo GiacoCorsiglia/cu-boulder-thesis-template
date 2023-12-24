@@ -1,17 +1,16 @@
-\chapter{Mathematical Formulation}
-\label{mathchapter}
+% !TEX root = ../thesis.tex
 
-The objective of this fake thesis document is to demonstrate
-a multitude of \LaTeX{} features as well as features specific
-to the thesis class.
-We start by giving one short formula,
-and one big hairy multi-line formula
-(one of the non-dimensional Navier-Stokes equations):
+\chapter{Mathematical Formulation}
+\label{chp:mathchapter}
+
+The objective of this fake thesis document is to demonstrate a multitude of
+\LaTeX{} features as well as features specific to the thesis class.  We start by
+giving one short formula, and one big hairy multi-line formula (one of the
+non-dimensional Navier-Stokes equations):
 
 \begin{equation}
 	A = \pi r^2
 \end{equation}
-
 
 \begin{eqnarray}
   \rho \left[ \frac{DV_r}{Dt} - M \epsilon^2
@@ -30,7 +29,6 @@ and one big hairy multi-line formula
       \diffth{\vth} - \frac{V_r}r\right] \right\}, \label{eq:rmom}
 \end{eqnarray}
 
-
 \section{Explanation of equations}
 
 The latter equation is non-dimensionalized using the following definitions:
@@ -43,27 +41,26 @@ The latter equation is non-dimensionalized using the following definitions:
 	\mu = \frac{\mu'}{\mu_0'} , ~~~
 	C_V = \frac{C_V'}{C_{V0}'},
 \]
-where $P_0'$ is the initial static pressure in the cylinder,
-and $\rho_0'$ and $T_0'$ are the density and temperature
-of the fluid being injected from the sidewall.
+where $P_0'$ is the initial static pressure in the cylinder, and $\rho_0'$ and
+$T_0'$ are the density and temperature of the fluid being injected from the
+sidewall.
 
 \begin{figure}[htbp]
-    \caption[Cutting up a triangular pyramid]{
-	A triangular pyramid may be cut up as shown, to
-	yield one top pyramid (with one-eighth the volume
-	of the full pyramid), three bottom corner pyramids
-	(which, when joined, are congruent to the top pyramid),
-	three prisms along the bottom edges (the area of whose
-	bottom faces total $B/2$) and the large central prism
-	(volume = $(B/4)(h/2) = Bh/8$).
-	The image, from PDF file ``pyr.pdf'',
-	was read in using the {\tt $\backslash$includegraphics}
-	command, from the {\tt graphicx} package.
+	\centering
+
+	\includegraphics[width=90mm]{chapter-2/pyr.pdf}
+
+	\caption[Cutting up a triangular pyramid]{
+		A triangular pyramid may be cut up as shown, to yield one top pyramid (with
+		one-eighth the volume of the full pyramid), three bottom corner pyramids
+		(which, when joined, are congruent to the top pyramid), three prisms along
+		the bottom edges (the area of whose bottom faces total $B/2$) and the large
+		central prism (volume = $(B/4)(h/2) = Bh/8$).  The image, from PDF file
+		``pyr.pdf'', was read in using the \texttt{$\backslash$includegraphics}
+		command, from the \texttt{graphicx} package.
 	}
-    \begin{center}
-	\includegraphics[width=90mm]{figs/pyr.pdf}
-    \end{center}
-\label{pyramid}
+
+	\label{fig:pyramid}
 \end{figure}
 
 
@@ -81,7 +78,7 @@ about when single spacing is appropriate in a thesis.
 
 And now, here is an example of using the macros
 \verb2\begin{singlespace}2 and \verb2\end{singlespace}2;
-another way to get single-spacing.
+another way to get single-spacing:
 
 \begin{singlespace}	% <-----------------------------
 Two cases are studied in the present work which differ only in the
@@ -95,25 +92,22 @@ non-axisymmetric unsteady radial velocity along the sidewall.
 \end{singlespace}	% <-----------------------------
 
 
-Usually you want to use a table produced by some other
-software, such as Excel, rather than try to do it using
-\LaTeX macros.  If the table is saved/printed to a PDF file,
-then it can be displayed using the
-$\backslash${\tt includegraphics} macro
-inside a {\tt table} environment:
-
+You may want to use a table produced by some other software, such as Excel,
+rather than try to do it using \LaTeX macros.  If the table is saved/printed to
+a PDF file, then it can be displayed using the
+\texttt{$\backslash$includegraphics} macro inside a \texttt{table} environment:
 
 \begin{table}
-    \caption[Table from a PDF file]{
-	This table wasn't constructed with \LaTeX{}
-	commands, but resides in PDF file
-	({\tt tableD.pdf})
-	created by some other software.
+	\centering
+
+  \caption[Table from a PDF file]{
+		This table wasn't constructed with \LaTeX{} commands, but resides in PDF
+		file \texttt{table.pdf} created by some other software.  It's so ugly!  Rendering your tables using LaTeX is probably better.
 	}
-    \begin{center}
-	\includegraphics[width=5.45in]{figs/tableD.pdf}
-    \end{center}
-\label{pdftable}
+
+	\includegraphics[width=5.45in]{chapter-2/table.pdf}
+
+	\label{tab:pdftable}
 \end{table}
 
 
@@ -131,8 +125,8 @@ Some of the boundary conditions are:
 \end{eqnarray}
 and solutions must be periodic in $\theta$.
 
-If you don't believe this stuff, check out
-Mulick\cite{mulick} and Baylor\cite{baylor}.
+If you don't believe this stuff, check out Mulick~\cite{mulick} and
+Baylor~\cite{baylor}.
 
 
 \section{Yet another section}
@@ -258,11 +252,7 @@ in \emph{thesis} class.
 \section{The End}
 \label{sec:end}
 
-Finally, this is the end.  The bibliography starts on
-the next page.
-Note how the \verb2\hyperref2 package
-(mentioned in chapter \ref{introchap})
-also makes hyperlinks from references
-(e.g., Mulick\cite{mulick})
-to entries in the bibliography.
-
+Finally, this is the end.  The bibliography starts on the next page.  Note how
+the \verb2\hyperref2 package (mentioned in \cref{chp:intro}) also makes
+hyperlinks from references (e.g., Mulick~\cite{mulick}) to entries in the
+bibliography.

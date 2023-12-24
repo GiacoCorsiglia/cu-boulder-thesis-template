@@ -1,80 +1,277 @@
-\documentclass[defaultstyle,11pt]{thesis}
-
-\usepackage{amssymb}		% to get all AMS symbols
-\usepackage{graphicx}		% to insert figures
-\usepackage{hyperref}		% PDF hyperreferences??
-
-%%%%%%%%%%%%   All the preamble material:   %%%%%%%%%%%%
-
-\title{This is the Name of my Thesis}
-
-\author{I.~B.}{Scriptor}
-
-\otherdegrees{B.A., North Dakota State University, 2005 \\
-	      M.S., University of Reno, 2007}
-
-\degree{Doctor of Philosophy}		%  #1 {long descr.}
-	{Ph.D., Rocket Science}		%  #2 {short descr.}
-
-\dept{Department of}			%  #1 {designation}
-	{Rocket Science}		%  #2 {name}
-
-\advisor{Prof.}				%  #1 {title}
-	{Ed Visor}			%  #2 {name}
-
-\reader{Rachel Goddard}		%  2nd person to sign thesis
-\readerThree{Thora Nea}		%  3rd person to sign thesis
-
-\abstract{  \OnePageChapter	% because it is very short
-
-	Often the abstract will be long enough to require
-	more than one page, in which case the macro
-	``$\backslash$OnePageChapter'' should {\it not}
-	be used.
-
-	But this one isn't, so it should.
-	}
-
-\dedication[Dedication]{	% NEVER use \OnePageChapter here.
-	To all of the fluffy kitties.
-	}
-
-\acknowledgements{	\OnePageChapter	% *MUST* BE ONLY ONE PAGE!
-	Here's where you acknowledge folks who helped.
-	But keep it short, i.e., no more than one page,
-	as required by the Grad School Specifications.
-	}
-
-% \IRBprotocol{E927F29.001X}	% optional!
-
-\ToCisShort	% use this only for 1-page Table of Contents
-
-\LoFisShort	% use this only for 1-page Table of Figures
-% \emptyLoF	% use this if there is no List of Figures
-
-\LoTisShort	% use this only for 1-page Table of Tables
-% \emptyLoT	% use this if there is no List of Tables
+\documentclass[defaultstyle,11pt,english]{thesis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%       BEGIN DOCUMENT...         %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%         PACKAGES & CONFIG        %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% I've found it to be good practice to include the babel package;
+% however---don't!  It breaks the appearance of chapter headings.
+% \usepackage[english]{babel}
+
+% Your thesis gets printed in color---you can use colors!  This package has
+% something to do with enabling that?
+\usepackage{color}
+
+% Something about for better accented-word behavior.
+\usepackage[T1]{fontenc}
+% The original template included this too, but I found it broke things.
+% \usepackage[latin9]{inputenc}
+
+% Improved typography.
+\usepackage{csquotes}
+\usepackage{microtype}
+
+% Improved text alignment.
+\usepackage{ragged2e}
+
+% To insert figures.
+\usepackage{graphicx}
+%
+\usepackage{epstopdf}
+% For sub-figure support.  I think the subcaption package may be better, but
+% that doesn't work with revtex (the document class for Physical Review), so I
+% use this one.
+\usepackage[caption=false]{subfig}
+% Honestly I forget why I included this package...
+\usepackage[export]{adjustbox}
+% You can use this command to put a box around LaTeX-generated figures.
+\usepackage{longfbox}
+
+% Lists.
+\usepackage{enumitem}
+
+% Proper equation rendering.
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbold}
+\usepackage{bm}
+\usepackage{mathtools}
+% Introduces \bra{} and \ket{} commands.  Never type \rangle again.
+\usepackage{braket}
+
+% Now you can typeset spin-1/2 properly: "spin-\nicefrac{1}{2}".
+\usepackage{nicefrac}
+
+% Better unit formatting.  But obviously you don't need units because c = h = 1.
+\usepackage{units}
+
+% Improved tables.
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{dcolumn}
+\usepackage{tabularx}
+\usepackage{makecell}
+% Alignment in table columns.
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% Increase table spacing so they're actually legible.
+\renewcommand{\arraystretch}{1.5}
+
+% PDF hyper-references (i.e., links between pages).
+\usepackage{hyperref}
+% This makes hyper-references not hideous.  Without this, links are black text
+% with an ugly red box around them.  If you're fine with that, do you even
+% deserve to graduate?
+\usepackage{xcolor}
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+}
+
+% Clever references: stop typing "Equation~\ref{foo}" manually---just type
+% \cref{foo} and let LaTeX figure out what kind of thing you're referencing.
+% NOTE: This must be loaded after hyperref.
+\usepackage[capitalise,noabbrev]{cleveref}
+
+% Lets you rotate stuff, like full page landscape tables.
+\usepackage{rotating}
+
+% HACK: Add a tiny bit of space atop all floats (figures and tables) to prevent
+% them from overlapping with page numbers when positioned at the top of the
+% page.  There ought to be a better way...
+\makeatletter
+\g@addto@macro\@floatboxreset{\vspace{2pt}}
+\makeatother
+
+% Lets you patch LaTeX commands.
+\usepackage{etoolbox}
+\usepackage{xpatch}
+% For example:
+% This makes all the quote environments italicized.
+\AtBeginEnvironment{quote}{\itshape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%       BIBLIOGRAPHY SETUP        %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% https://mirror.mwt.me/ctan/macros/latex/contrib/biblatex/doc/biblatex.pdf
+% https://mirror.mwt.me/ctan/macros/latex/contrib/biblatex-contrib/biblatex-phys/biblatex-phys.pdf
+\usepackage[
+  backend=biber,
+  style=phys, % The APS citation style.
+  articletitle=true, % References without article titles are so annoying.
+  biblabel=brackets,
+  pageranges=false, % Does anybody care about page ranges anymore?
+  backref=true, % Enables "Cited on p. XX" messages for all references.
+  sorting=nyt,
+  sortcites=true,
+  sortcase=false,
+  url=false, % Still printed for @online entries.
+  eprint=false,
+  doi=false, % Provide missing page numbers to suppress this everywhere
+  date=year,
+]{biblatex}
+% Allows the bibliography to create DOI links.
+\usepackage{doi}
+% The name of your bibliography file.  Pretty sure you can import multiple.
+\addbibresource{bibliography.bib}
+% Defines the format for back-references.
+\DefineBibliographyStrings{english}{%
+  backrefpage = {Cited on p.},
+  backrefpages = {Cited on pp.},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%             PREAMBLE            %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title of your thesis.
+\title{This is the Name of my Thesis}
+% Uncomment this if you want to customize the display of your thesis' title on
+% the title page only (such as inserting a line break).
+% \titlePageTitle{
+%   This is the Name\\
+%   of my Thesis
+% }
+
+% Who even are you ?
+\author{Your Full} % {First Middle}
+  {Name} % {Last}
+
+% How long have you already been in school?
+\otherdegrees{
+  B.A., College of Hard Knocks, 2020 \\
+  M.S., University of Colorado Boulder, 2023
+}
+
+% What degree is this thesis gonna get you?
+\degree{Doctor of Philosophy} % {Long description}
+  {Ph.D., Rocket Science}  % {Short description}
+
+% What department?
+\dept{Department of} % {Designation}
+  {Rocket Science} % {Name}
+
+% The chair of your thesis committee.
+\advisor{Professor} % {Title}
+  {Marie Curie}  % {Name}
+% Other members of the thesis committee.
+\reader{Isaac Newton}
+\readerThree{Albert Einstein}
+% Uncomment if you have more committee members.
+% \readerFour{}
+% \readerFive{}
+
+% Uncomment if you want to credit more than one advisor in the "Thesis directed
+% by" message on the second page.
+% \thesisDirectedBy{M. Curie and I. Newton}
+
+% Your abstract will probably be more than one page.
+\abstract{ \OnePageChapter  % because it is very short
+  Often the abstract will be long enough to require more than one page, in which
+  case the macro \texttt{$\backslash$OnePageChapter} should \emph{not} be used.
+
+  But this one isn't, so it should.
+}
+
+% Here's where you have the chance to blame other people for convincing you to
+% get a PhD.
+\dedication[Dedication]{ % NEVER use \OnePageChapter here.
+  % Use \begin{center} ... \end{center} to center this content.
+  For whom it may concern.
+}
+
+% NOTE: It says "must only be one page" but I definitely know people who have
+% had two page acknowledgements.
+\acknowledgements{ \OnePageChapter  % *MUST* BE ONLY ONE PAGE!
+  Here's where you acknowledge folks who helped.  But keep it short, i.e., no
+  more than one page, as required by the Grad School Specifications.
+}
+
+% Uncomment to insert a page just before the first chapter with a nice quote or
+% something, like any good fantasy novel.  Or, a joke.
+% \introductoryPage{
+%   A neutrino walks through a bar.
+% }
+
+% Uncomment if you know what the IRB is.
+% \IRBprotocol{E927F29.001X}
+
+%
+% Comment/uncomment these lines depending on the length of these sections.
+%
+\ToCisShort  % use this only for 1-page Table of Contents
+%
+\LoFisShort  % use this only for 1-page Table of Figures
+% \emptyLoF  % use this if there is no List of Figures
+%
+\LoTisShort  % use this only for 1-page Table of Tables
+% \emptyLoT  % use this if there is no List of Tables
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%            DOCUMENT             %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
+% FONT: ecrm1095
+% TEXTWIDTH: 469.75499pt = 6.52437486112in
+% BODY FONT SIZE: 10.95pt
+% FIGURE FONT SIZE: ^ same
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%         CUSTOM COMMANDS         %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \input macros.tex
-\input chapter1.tex
-\input chapter2.tex
 
-%%%%%%%%%   then the Bibliography, if any   %%%%%%%%%
-\bibliographystyle{plain}	% or "siam", or "alpha", etc.
-\nocite{*}		% list all refs in database, cited or not
-\bibliography{refs}		% Bib database in "refs.bib"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%            CHAPTERS             %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% It's probably preferable to break your chapters into different files and
+% include them here.
+\input chapter-1/chapter-1.tex
+\input chapter-2/chapter-2.tex
 
-%%%%%%%%%   then the Appendices, if any   %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%          BIBLIOGRAPHY           %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Uncomment if you want to list all the references in your bibtex file,
+% regardless of whether you've explicitly cited them in the text.
+% \nocite{*}
+\begin{singlespacing}
+% This command assumes you're using biber.  Configure the bibliography file in
+% the preamble.
+\printbibliography[
+  % Title of this section.
+  title={References},
+  % This line includes the bibliography in the table of contents, which is
+  % required by the graduate school.
+  heading=bibintoc,
+]
+\end{singlespacing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%          APPENDICES           %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Remove/comment these lines if you don't have any.
 \appendix
-\input appendixA.tex
-\input appendixB.tex
-
+\input appendix-a/appendix-a.tex
+\input appendix-b/appendix-b.tex
 
 \end{document}
-
