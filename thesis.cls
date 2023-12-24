@@ -5,6 +5,11 @@
 %%	Preparation of Master's Thesis and Doctoral Dissertations
 %% Version 1.00 written by John P. Weiss, 1997
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  version 1.15, Giaco Corsiglia, March 2023 --
+%%    - changed \emph to italicize text instead of bolding it under the
+%%      default style after confirming with the Graduate School that
+%%      their style guide forbidding italicized text was outdated.
+%%    - renamed "emphisbold" to "emphisitalics" throughout.
 %%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
@@ -99,7 +104,7 @@
 \newif\if@AllHeadings
 \newif\if@NumberStdHeadings
 \newif\if@PerChptrNumbering
-\newif\if@emphisbold
+\newif\if@emphisitalics
 \newif\if@boldhead
 \newif\if@fixedHeadSz
 \newif\if@headSizeTwelvePt
@@ -115,7 +120,7 @@
 \@AllHeadingsfalse
 \@NumberStdHeadingstrue
 \@PerChptrNumberingtrue
-\@emphisboldtrue
+\@emphisitalicstrue
 \@boldheadtrue
 \@fixedHeadSzfalse
 \@centerChaptertrue
@@ -130,7 +135,7 @@
 \DeclareOption{centerh1}{ \@centerSectiontrue }
 \DeclareOption{chapleft}{ \@centerSectiontrue }
 \DeclareOption{chapup}{ \@chapterCapstrue }
-\DeclareOption{emph2underline}{ \@emphisboldfalse }
+\DeclareOption{emph2underline}{ \@emphisitalicsfalse }
 \DeclareOption{plainhead}{ \@boldheadfalse }
 \DeclareOption{fixedheadsize}{ \@fixedHeadSztrue }
 \DeclareOption{varheadsize}{\@headSizeTwelvePtfalse}% Hidden option.  Don't use.
@@ -142,17 +147,17 @@
 	\@PerChptrNumberingtrue\@NumberStdHeadingstrue\@AllHeadingstrue
 	\@centerChaptertrue\@centerSectionfalse
 	\@inlineSubSubSectionfalse\@numberSubSubSectiontrue}
-\DeclareOption{typewriterstyle}{ \@emphisboldfalse
+\DeclareOption{typewriterstyle}{ \@emphisitalicsfalse
 	\@PerChptrNumberingfalse\@NumberStdHeadingsfalse\@AllHeadingsfalse
 	\@centerChaptertrue\@centerSectiontrue\@chapterCapstrue
 	\@inlineSubSubSectiontrue\@numberSubSubSectionfalse
 	\@boldheadfalse\@fixedHeadSztrue}
-\DeclareOption{modernstyle}{ \@emphisboldtrue
+\DeclareOption{modernstyle}{ \@emphisitalicstrue
 	\@PerChptrNumberingtrue\@NumberStdHeadingstrue\@AllHeadingsfalse
 	\@centerChaptertrue\@centerSectionfalse\@chapterCapsfalse
 	\@inlineSubSubSectiontrue\@numberSubSubSectionfalse
 	\@boldheadtrue\@fixedHeadSzfalse}
-\DeclareOption{defaultstyle}{ \@emphisboldtrue
+\DeclareOption{defaultstyle}{ \@emphisitalicstrue
 	\@PerChptrNumberingtrue\@NumberStdHeadingstrue\@AllHeadingsfalse
 	\@centerChaptertrue\@centerSectionfalse\@chapterCapsfalse
 	\@inlineSubSubSectionfalse\@numberSubSubSectiontrue
@@ -218,13 +223,13 @@
 \newcommand*{\th@SubSectionStyle}{\if@thInHeading\normalsize\th@HdFnt\fi}
 \newcommand*{\th@OtherSecHeadStyles}{\if@thInHeading\normalsize\th@HdFnt\fi}
 
-% Re-define the emphasis commands to use either BOLDFACE or UNDERLINING,
+% Re-define the emphasis commands to use either ITALICS or UNDERLINING,
 % depending on the startup flags.
 
 \newcommand*{\EmphReset}{
-	\if@emphisbold
-		\let\em\bfseries
-		\let\emph\textbf
+	\if@emphisitalics
+		\let\em\itshape
+		\let\emph\textit
 	\else
 		\ULforem
 	\fi
