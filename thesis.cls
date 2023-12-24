@@ -23,6 +23,8 @@
 %%    - added \introductoryPage{#1} command for a vertically centered
 %%      message or quotation on a deicated page immediately before
 %%      the first chapter.
+%%    - added \thesisDirectedBy{#1} command to customize the "Thesis
+%%      directed by..." message on the second page.
 %%  version 1.14, Ken Anderson, August 2020 -- removed signature
 %%		page; instead list committee members on title page.
 %%		Changes made to comply with new Graduate School
@@ -915,6 +917,7 @@
 		full title.  The second arg is your advisor's \MessageBreak
 		name.}
 }
+\newcommand*{\th@thesisDirectedBy}{\th@advisortitle\ \th@advisor}
 \newcommand*{\th@reader}{
 	\ClassError{thesis}{
 		You must specify the name of the other \MessageBreak
@@ -1096,7 +1099,7 @@
 			\setlength{\itemsep}{0pt}}
 		\item \th@revname\ (\th@degree)
 		\item \th@title
-        \item Thesis directed by \th@advisortitle\ \th@advisor
+        \item Thesis directed by \th@thesisDirectedBy
 	\end{list}
 	\par
 	\vspace*{4\parsep}
@@ -1201,7 +1204,7 @@
 		\th@LoTpage
 		\typeout{Making LoF Page}
 		\th@LoFpage
-	\fi
+		\fi
 }
 
 
@@ -1259,6 +1262,9 @@
 \newcommand*{\advisor}[2]{
 	\th@StoreIn{\th@advisor}{#2}
 	\th@StoreIn{\th@advisortitle}{#1}
+}
+\newcommand*{\thesisDirectedBy}[1]{
+	\th@StoreIn{\th@thesisDirectedBy}{#1}
 }
 \newcommand*{\dept}[2]{
 	\th@StoreIn{\th@deptorg}{#1}
