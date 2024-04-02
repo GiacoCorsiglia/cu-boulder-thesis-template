@@ -9,7 +9,7 @@ An improved version of CU Boulder's [original](https://www.colorado.edu/graduate
 
 See the changelog in `thesis.cls` for more details.
 
-I submitted my physics [PhD dissertation](https://media.proquest.com/media/hms/PFT/2/7hwaR?_s=A2RkJg2HN1WqrgUA0fI4K213EXU%3D) to the graduate school using this template in May 2023.
+I submitted my physics [PhD dissertation](https://www.proquest.com/openview/218e1cbc60984627b9e794c22d5c4201/1?pq-origsite=gscholar&cbl=18750&diss=y) to the graduate school using this template in May 2023.
 
 ## How To Use This Template
 
